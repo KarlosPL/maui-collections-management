@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CollectionManagementSystem.Pages.SingleCollectionPage"
+             x:Name="singleCollectionPage"
+             xmlns:converters="clr-namespace:CollectionManagementSystem.Converters"
+             Title="{Binding CollectionName}">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Dodaj element" Command="{Binding GoToNewItemPageCommand}" />
+        <ToolbarItem Text="Zmień nazwę kolekcji" Command="{Binding RenameCollectionCommand}" />
+        <ToolbarItem Text="Eksportuj kolekcję" Command="{Binding ExportCollectionCommand}" />
+        <ToolbarItem Text="Podsumuj kolekcję" Command="{Binding WrappedCommand}" />
+        <ToolbarItem Text="Usuń kolekcje" Command="{Binding DeleteCollectionCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StatusToColorConverter x:Key="StatusToColor"/>
+            <converters:NullOrEmptyStringToBoolConverter x:Key="NullOrEmptyToBool" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="75,50">
+            <CollectionView ItemsSource="{Binding Items}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="4" HorizontalItemSpacing="10" VerticalItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="10" Padding="10" HasShadow="True" BackgroundColor="{Binding Status, Converter={StaticResource StatusToColor}}">
+                            <StackLayout>
+                                <Image Source="{Binding ImagePath}" IsVisible="{Binding ImagePath, Converter={StaticResource NullOrEmptyToBool}}" Aspect="AspectFit" HeightRequest="100" />
+                                <Label Text="{Binding Name}" HorizontalOptions="Center" FontFamily="RobotoBold" FontSize="20" />
+                                <Label Text="{Binding Status}" IsVisible="{Binding Status, Converter={StaticResource NullOrEmptyToBool}}" HorizontalOptions="Center" TextColor="#DC493A" FontSize="15" />
+                                <HorizontalStackLayout Spacing="50" Padding="10">
+                                    <Label Text="{Binding Price, StringFormat='Cena: {0} zł'}" IsVisible="{Binding Price, Converter={StaticResource NullOrEmptyToBool}}" HorizontalOptions="Center" VerticalOptions="End" FontFamily="RobotoThin" FontSize="18" />
+                                    <Label Text="{Binding Rating, StringFormat='Ocena: {0}/10'}" IsVisible="{Binding Rating, Converter={StaticResource NullOrEmptyToBool}}" HorizontalOptions="Center" VerticalOptions="End" FontFamily="RobotoRegular" FontSize="15" FontAttributes="Italic" />
+                                </HorizontalStackLayout>
+                                <Frame IsVisible="{Binding Comment, Converter={StaticResource NullOrEmptyToBool}}">
+                                    <Label Text="{Binding Comment}" HorizontalOptions="Start" VerticalOptions="Start" FontSize="14" />
+                                </Frame>
+                                <Frame IsVisible="{Binding CustomName, Converter={StaticResource NullOrEmptyToBool}}" Margin="0,10,0,0" BackgroundColor="Transparent">
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding CustomName}" FontFamily="RobotoMedium" HorizontalOptions="Start" VerticalOptions="Start" FontSize="20" />
+                                        <Label Text="{Binding CustomValue}" HorizontalOptions="Start" VerticalOptions="Start" FontSize="14" />
+                                    </VerticalStackLayout>
+                                </Frame>
+                                <Button Text="Edytuj" Command="{Binding Path=BindingContext.EditItemCommand, Source={x:Reference singleCollectionPage}}" CommandParameter="{Binding .}" BackgroundColor="#4392F1" Margin="0,15,0,0" />
+                                <Button Text="Usuń" Command="{Binding Path=BindingContext.RemoveItemCommand, Source={x:Reference singleCollectionPage}}" CommandParameter="{Binding .}" BackgroundColor="Red" Margin="0,15,0,100" />
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

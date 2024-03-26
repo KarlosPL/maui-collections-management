@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CollectionManagementSystem.MainPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Dodaj kolekcję" Command="{Binding GoToNewCollectionPageCommand}" />
+        <ToolbarItem Text="Importuj kolekcję" Command="{Binding ImportCollectionCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="75,50">
+            <CollectionView ItemsSource="{Binding Collections}" 
+                            SelectedItem="{Binding SelectedCollection}"
+                            SelectionMode="Single"
+                            SelectionChangedCommand="{Binding TapCommand}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="4" HorizontalItemSpacing="10" VerticalItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame>
+                            <StackLayout HeightRequest="100">
+                                <Label Text="{Binding Name}" HorizontalOptions="Center" Margin="35" FontSize="20" />
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CollectionManagementSystem.Pages.NewItemPage"
+             Title="Zarządzanie elementem">
+
+    <ScrollView>
+        <Grid Padding="200,75" ColumnSpacing="15" RowSpacing="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Entry Placeholder="Nazwa" Text="{Binding Name}" />
+            <Entry Placeholder="Cena" Text="{Binding Price}" Keyboard="Numeric" Grid.Column="1" />
+            <Picker Title="Status" ItemsSource="{Binding Statuses}" SelectedItem="{Binding Status}" Grid.Row="1" />
+            <Entry Placeholder="Ocena w skali od 1 do 10" Text="{Binding Rating}" Keyboard="Numeric" Grid.Row="1" Grid.Column="1" />
+            <Editor Placeholder="Napisz komentarz do elementu..." HeightRequest="100" Text="{Binding Comment}" Grid.Row="2" Grid.ColumnSpan="2" />
+            <VerticalStackLayout  Grid.Row="3">
+                <Label Text="* Opcjonalne" TextColor="Gray" Margin="0,0,0,10" FontSize="15" FontFamily="RobotoRegular" FontAttributes="Italic" VerticalOptions="Center" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Entry Placeholder="Nazwa dowolnej kolumny" Text="{Binding CustomName}" />
+                    <Entry Placeholder="Wartość dowolnej kolumny" Text="{Binding CustomValue}" Grid.Column="1" />
+                </Grid>
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Row="4" VerticalOptions="End" Spacing="5">
+                <Button Text="Wybierz obraz" Command="{Binding PickImageCommand}" />
+                <Button Text="{Binding SaveOrUpdateButtonText}" Command="{Binding AddOrUpdateItemCommand}" />
+                <Label Text="{Binding ImagePath, StringFormat='Image Path: {0}'}" />
+            </VerticalStackLayout>
+            <Frame Grid.Row="3" Grid.RowSpan="2" Grid.Column="1">
+                <Image Source="{Binding ImagePath}" HeightRequest="200" />
+            </Frame>
+        </Grid>
+    </ScrollView>
+</ContentPage>

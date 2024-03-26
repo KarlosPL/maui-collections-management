@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CollectionManagementSystem.Pages.NewCollectionPage"
+             Title="Dodaj nową kolekcję">
+
+    <ScrollView>
+        <Frame CornerRadius="20" BorderColor="CadetBlue" Margin="100">
+            <VerticalStackLayout Padding="100">
+                <Entry Placeholder="Nazwa" Text="{Binding EnteredName}" />
+                <Button Text="Dodaj kolekcję" Command="{Binding AddNewCollectionCommand}" Margin="0,25" />
+            </VerticalStackLayout>
+        </Frame>
+    </ScrollView>
+    
+</ContentPage>
