@@ -243,7 +243,8 @@ namespace CollectionManagementSystem.ViewModels
                 var fileName = $"items_{CollectionId}_{DateTime.Now:yyyyMMddHHmm}.txt";
                 var savePath = Path.Combine(downloadsPath, fileName);
 
-                var lines = Items.Select(item => $"{CollectionId},{item.Id},{item.Name},{item.Price},{item.Status},{item.Rating},{item.Comment},{item.ImagePath},{item.CustomName},{item.CustomValue}");
+                var lines = new List<string> { $"{CollectionId},{CollectionName}" };
+                lines.AddRange(Items.Select(item => $"{CollectionId},{item.Id},{item.Name},{item.Price},{item.Status},{item.Rating},{item.Comment},{item.ImagePath},{item.CustomName},{item.CustomValue}"));
 
                 await File.WriteAllLinesAsync(savePath, lines);
 

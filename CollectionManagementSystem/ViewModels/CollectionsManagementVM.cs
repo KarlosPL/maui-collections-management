@@ -125,27 +125,29 @@ namespace CollectionManagementSystem.ViewModels
                     }
 
                     var importLines = await File.ReadAllLinesAsync(result.FullPath);
-                    foreach (var line in importLines)
+
+                    if (importLines.Length > 0)
+                    {
+                        var collectionMetaData = importLines[0].Split(',');
+                        var collectionId = collectionMetaData[0];
+                        var collectionName = collectionMetaData.Length > 1 ? collectionMetaData[1] : "Brak nazwy";
+
+                        if (!existingCollections.Any(c => c.StartsWith($"{collectionId},")))
+                        {
+                            existingCollections.Add($"{collectionId},{collectionName}");
+                            Collections.Add(new SingleCollection
+                            {
+                                Id = collectionId,
+                                Name = collectionName,
+                            });
+                        }
+                    }
+
+                    foreach (var line in importLines.Skip(1))
                     {
                         var parts = line.Split(',');
                         if (parts.Length >= 10)
                         {
-                            var collectionId = parts[0];
-                            var collectionName = parts[2];
-
-                            var collectionExists = existingCollections.Any(c => c.StartsWith($"{collectionId},"));
-                            if (!collectionExists)
-                            {
-                                existingCollections.Add($"{collectionId},{collectionName}");
-                                var newCollection = new SingleCollection
-                                {
-                                    Id = collectionId,
-                                    Name = collectionName,
-                                };
-
-                                Collections.Add(newCollection);
-                            }
-
                             if (!existingItems.Contains(line))
                             {
                                 existingItems.Add(line);
@@ -165,6 +167,7 @@ namespace CollectionManagementSystem.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Błąd", "Nie udało się zaimportować kolekcji i przedmiotów.", "OK");
             }
         }
+
 
         async Task WriteCollectionsToFile()
         {
